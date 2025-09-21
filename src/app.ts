@@ -1,8 +1,16 @@
-import express, { Request, Response } from "express";
-
+import express, {  Request, Response } from "express";
+import cors from "cors"
+import { router } from "./app/routes";
+import { globalErrorHandler } from "./app/modules/globalErrorHandler";
+import notFound from "./app/errorHelpers/NotFound";
 
 
 const app = express();
+
+// user routes
+app.use(express.json())
+app.use(cors())
+app.use("/api/v1/", router)
 
 
 app.get("/", (req: Request, res: Response) => {
@@ -10,5 +18,11 @@ app.get("/", (req: Request, res: Response) => {
     message: "Welcome to Tour Management System",
   });
 });
+
+ 
+app.use(globalErrorHandler)
+
+app.use(notFound);
+
 
 export default app;
